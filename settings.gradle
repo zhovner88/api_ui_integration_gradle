@@ -1,0 +1,4 @@
+rootProject.name = 'se-tpm'
+include 'ui-tests'
+include 'api-tests'
+

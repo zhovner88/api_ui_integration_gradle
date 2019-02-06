@@ -1,0 +1,6 @@
+.idea/
+.gradle/
+build/
+out/
+.allure/
+api-tests/allure-results/
