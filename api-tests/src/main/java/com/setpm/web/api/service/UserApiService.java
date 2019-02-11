@@ -1,5 +1,6 @@
 package com.setpm.web.api.service;
 
+import com.github.javafaker.Faker;
 import com.setpm.web.api.model.User;
 import com.setpm.web.api.model.UserObject;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -10,6 +11,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
 
 @Slf4j
 public class UserApiService {
@@ -30,6 +33,16 @@ public class UserApiService {
                 .body(user)
                 .when()
                 .post("user-service/auth/login")
+                .then();
+    }
+
+    // get list of roles
+    public ValidatableResponse getAllRoles() {
+        log.info("Getting the list of all roles: ");
+
+        return setup()
+                .when()
+                .get("user-service/roles")
                 .then();
     }
 
@@ -70,6 +83,132 @@ public class UserApiService {
         String userId = validatableResponse
                 .extract().path("id[" + id + "]");
         return userId;
+    }
+
+    // returns a specific role
+    public String getUserRole(String id) {
+        ValidatableResponse validatableResponse = getAllRoles();
+        String roleId = validatableResponse
+                .extract().path("id[" + id + "]");
+        return roleId;
+    }
+
+    // returns a specific username from list
+    public String getUserName(String id) {
+        ValidatableResponse validatableResponse = getAllUsers();
+        String userName = validatableResponse
+                .extract().path("username[" + id + "]");
+        return userName;
+    }
+
+    // update user
+    public ValidatableResponse updateUser(UserObject user, String userId) {
+        return setup()
+                .body(user)
+                .when()
+                .put("user-service/users/" + userId)
+                .then();
+    }
+
+    // create mock user
+    public UserObject createNewUser() {
+        Faker faker = new Faker();
+        ArrayList<String> uiccIds = new ArrayList<>();
+        uiccIds.add("testUiccid");
+
+        UserObject user = new UserObject()
+                .setUsername(faker.name().username())
+                .setPassword("password")
+                .setGroupId("autotestGeneratedUsers")
+                .setRoleId(getUserRole("0"))
+                .setUiccIds(uiccIds);
+
+        return user;
+    }
+
+    // create user with existing username
+    public UserObject createUserWithExistingUsername() {
+        ArrayList<String> uiccIds = new ArrayList<>();
+        uiccIds.add("testUiccid");
+
+        UserObject user = new UserObject()
+                .setUsername(getUserName("0"))
+                .setPassword("password")
+                .setGroupId("autotestGeneratedUsers")
+                .setRoleId(getUserRole("0"))
+                .setUiccIds(uiccIds);
+
+        return user;
+    }
+
+    // create user with non-existent role
+    public UserObject createUserWithNonExistentRole() {
+        Faker faker = new Faker();
+        ArrayList<String> uiccIds = new ArrayList<>();
+        uiccIds.add("testUiccid");
+
+        UserObject user = new UserObject()
+                .setUsername(faker.name().username())
+                .setPassword("password")
+                .setGroupId("autotestGeneratedUsers")
+                .setRoleId(faker.idNumber().valid())
+                .setUiccIds(uiccIds);
+
+        return user;
+    }
+
+    // update existing user
+    public UserObject updateExistingUser() {
+        Faker faker = new Faker();
+        ArrayList<String> uiccIds = new ArrayList<>();
+        uiccIds.add("testUiccid");
+
+        UserObject user = new UserObject()
+                .setUsername(faker.name().username())
+                .setPassword("password")
+                .setGroupId("autotestGeneratedUsers")
+                .setRoleId(getUserRole("0"))
+                .setUiccIds(uiccIds)
+                .setId(getUserId("0"));
+
+        return user;
+    }
+
+    // update user with existent username
+    public UserObject createUserWithExistentUsername() {
+        ValidatableResponse validatableResponse = getAllUsers();
+
+        UserObject user = new UserObject()
+                .setId(validatableResponse.extract().body().jsonPath().get("id[0]"))
+                .setUsername(validatableResponse.extract().body().jsonPath().get("username[1]"))
+                .setGroupId(validatableResponse.extract().body().jsonPath().get("groupId[0]"))
+                .setRoleId(validatableResponse.extract().body().jsonPath().get("roleId[0]"));
+
+        return user;
+    }
+
+    // Create user with non-existent roleId
+    public UserObject createUserWithNonExistentRoleId() {
+        ValidatableResponse validatableResponse = getAllUsers();
+        Faker faker = new Faker();
+
+        UserObject user = new UserObject()
+                .setId(validatableResponse.extract().body().jsonPath().get("id[0]"))
+                .setUsername(validatableResponse.extract().body().jsonPath().get("username[0]"))
+                .setGroupId(validatableResponse.extract().body().jsonPath().get("groupId[0]"))
+                .setRoleId(faker.idNumber().invalid());
+
+        return user;
+    }
+
+    // Delete user by id
+    public ValidatableResponse deleteUserById(String userId) {
+        log.info("Deleting the user with id: {}", userId);
+
+        return setup()
+                .when()
+                .delete("user-service/users/" + userId)
+                .then();
     }
 
 }
