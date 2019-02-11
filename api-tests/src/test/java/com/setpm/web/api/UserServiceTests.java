@@ -30,9 +30,11 @@ public class UserServiceTests {
     public void testCanLoginUserWithValidCredentials() {
         // given
         UserObject user = userApiService.createNewUser();
-        userApiService.registerUser(user);
 
         // when
+        userApiService.registerUser(user);
+
+        // and
         ValidatableResponse validatableResponse = userApiService.loginUser(user);
 
         // expect
