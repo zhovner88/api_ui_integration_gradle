@@ -36,10 +36,18 @@ public class UserApiService {
                 .then();
     }
 
+    public ValidatableResponse loginUser(UserObject user) {
+        log.info("Registering user {}", user);
+
+        return setup()
+                .body(user)
+                .when()
+                .post("user-service/auth/login")
+                .then();
+    }
+
     // get list of roles
     public ValidatableResponse getAllRoles() {
-        log.info("Getting the list of all roles: ");
-
         return setup()
                 .when()
                 .get("user-service/roles")

@@ -8,6 +8,7 @@ import io.qameta.allure.Story;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
@@ -23,16 +24,19 @@ public class UserServiceTests {
     UserApiService userApiService = new UserApiService();
 
     @Test
+    @Disabled
     @Story("VSTS-179 - As a VZ Admin I want to login to TSM Lite")
     @Description("Test can login user with valid credentials")
     public void testCanLoginUserWithValidCredentials() {
         // given
-        User user = new User()
-                .setUsername("test4")
-                .setPassword("test4");
+        UserObject user = userApiService.createNewUser();
+        userApiService.registerUser(user);
+
+        // when
+        ValidatableResponse validatableResponse = userApiService.loginUser(user);
 
         // expect
-        userApiService.loginUser(user).assertThat().statusCode(200)
+        validatableResponse.assertThat().statusCode(200)
                 .body("token", response -> notNullValue());
     }
 
@@ -207,7 +211,7 @@ public class UserServiceTests {
         // given
         UserObject user = userApiService.createNewUser();
         ValidatableResponse validatableResponseUser = userApiService.registerUser(user);
-        String userId = validatableResponseUser.extract().body().jsonPath().get("id")
+        String userId = validatableResponseUser.extract().body().jsonPath().get("id");
 
         // when
         ValidatableResponse validatableResponseDelete =
