@@ -87,7 +87,7 @@ public class UserServiceTests {
 
     @Test
     @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
-    @Description("Test can get existing user by ID")
+    @Description("Test can handle request to non existent user")
     public void testCatHandleRequestToNonExistentUser() {
         // given
         String userId = "nonExistentValue";
@@ -158,7 +158,7 @@ public class UserServiceTests {
     public void testCanUpdateUser() {
         // given
         ValidatableResponse validatableResponse = userApiService.registerUser(userApiService.createNewUser());
-        String userId = validatableResponse.extract().body().jsonPath().get("id");
+        String userId = userApiService.extractUserIdFromResponse(validatableResponse);
 
         // when
         ValidatableResponse validatableResponseUpdatedUser =
@@ -212,7 +212,7 @@ public class UserServiceTests {
         // given
         UserObject user = userApiService.createNewUser();
         ValidatableResponse validatableResponseUser = userApiService.registerUser(user);
-        String userId = validatableResponseUser.extract().body().jsonPath().get("id");
+        String userId = userApiService.extractUserIdFromResponse(validatableResponseUser);
 
         // when
         ValidatableResponse validatableResponseDelete =
@@ -227,6 +227,64 @@ public class UserServiceTests {
                 .assertThat()
                 .statusCode(404)
                 .body("message", response -> is("user_not_exists"));
+    }
+
+    @Test
+    @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
+    @Description("Test can handle getting non existing role id")
+    public void testCanHandleGettingNonExistingRoleId() {
+        // when
+        ValidatableResponse validatableResponse = userApiService.getRoleById("inexistingRoleId");
+
+        // assert
+        validatableResponse.assertThat()
+                .statusCode(404)
+                .body("message", response -> is("role_not_exists"));
+    }
+
+    @Test
+    @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
+    @Description("Test can create a new user role")
+    public void testCanCreateNewRole() {
+        // when
+        ValidatableResponse validatableResponse = userApiService.createNewUserRole();
+
+        // assert
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("id", response -> not(isEmptyString()));
+    }
+
+    @Test
+    @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
+    @Description("Test can edit a newly created UserRole")
+    public void testCanEditUserRole() {
+        // given
+        String createdRoleId = userApiService.returnRoleIdFromOjbect(userApiService.createNewUserRole());
+
+        // when
+        ValidatableResponse validatableResponse = userApiService.editRole(createdRoleId);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("updated", response -> not(isEmptyString()));
+    }
+
+    @Test
+    @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
+    @Description("Test can not create a user role with already existing name")
+    public void testCanNotRegisterRoleWithExistingName() {
+        // given
+        String existingRoleName = userApiService.getExistingRoleName();
+
+        // when
+        ValidatableResponse validatableResponse = userApiService.createNewUserRoleWithSpecifiedName(existingRoleName);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(400)
+                .body("message", response -> is("role_exists"));
     }
 
 }
