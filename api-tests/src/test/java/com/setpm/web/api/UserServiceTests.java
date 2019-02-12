@@ -287,4 +287,19 @@ public class UserServiceTests {
                 .body("message", response -> is("role_exists"));
     }
 
+    @Test
+    @Story("VSTS-268 - As a Root Admin I want to create a user and set user role")
+    @Description("Test can not edit user role with not_editable status")
+    public void testCanNotEditRoleWithNotEditableStatus() {
+        // given
+        String notEditableRoleId = userApiService.findNotEditableRoleId();
+
+        // when
+        ValidatableResponse validatableResponse = userApiService.editRole(notEditableRoleId);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(400)
+                .body("message", response -> is("not_editable_role"));
+    }
 }

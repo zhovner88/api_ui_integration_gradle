@@ -16,7 +16,7 @@ public class UserRole{
 	@JsonProperty("roleName")
 	private String roleName;
 
-	@JsonProperty("roleId")
-	private String roleId;
+	@JsonProperty("id")
+	private String id;
 
 }
