@@ -9,7 +9,6 @@ import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 
 import static io.restassured.RestAssured.get;
-import static io.restassured.path.json.JsonPath.from;
 
 @Slf4j
 public class UserApiService {
@@ -31,7 +29,6 @@ public class UserApiService {
     }
 
     // logging in a user
-
     public ValidatableResponse loginUser(User user) {
         log.info("Registering user {}", user);
 
@@ -43,7 +40,6 @@ public class UserApiService {
     }
 
     // login user
-
     public ValidatableResponse loginUser(UserObject user) {
         log.info("Registering user {}", user);
 
@@ -55,7 +51,6 @@ public class UserApiService {
     }
 
     // get list of roles
-
     public ValidatableResponse getAllRoles() {
         return setup()
                 .when()
@@ -64,7 +59,6 @@ public class UserApiService {
     }
 
     // returns a response with a list of all users
-
     public ValidatableResponse getAllUsers() {
         log.info("Getting the user list");
 
@@ -75,7 +69,6 @@ public class UserApiService {
     }
 
     // register a new user
-
     public ValidatableResponse registerUser(UserObject userObject) {
         log.info("Registering a new user {}: ", userObject);
 
@@ -87,7 +80,6 @@ public class UserApiService {
     }
 
     // get a user by Id
-
     public ValidatableResponse getUserById(String id) {
         log.info("Getting user by id: ");
 
@@ -98,7 +90,6 @@ public class UserApiService {
     }
 
     // returns user id value as a String
-
     public String getUserId(String id) {
         ValidatableResponse validatableResponse = getAllUsers();
         String userId = validatableResponse
@@ -107,7 +98,6 @@ public class UserApiService {
     }
 
     // returns a specific role # from list af all roles
-
     public String getUserRole(String id) {
         ValidatableResponse validatableResponse = getAllRoles();
         String roleId = validatableResponse
@@ -116,7 +106,6 @@ public class UserApiService {
     }
 
     // returns a specific username from list
-
     public String getUserName(String id) {
         ValidatableResponse validatableResponse = getAllUsers();
         String userName = validatableResponse
@@ -125,7 +114,6 @@ public class UserApiService {
     }
 
     // update user
-
     public ValidatableResponse updateUser(UserObject user, String userId) {
         return setup()
                 .body(user)
@@ -135,7 +123,6 @@ public class UserApiService {
     }
 
     // create mock user
-
     public UserObject createNewUser() {
         Faker faker = new Faker();
         ArrayList<String> uiccIds = new ArrayList<>();
@@ -152,7 +139,6 @@ public class UserApiService {
     }
 
     // create user with existing username
-
     public UserObject createUserWithExistingUsername() {
         ArrayList<String> uiccIds = new ArrayList<>();
         uiccIds.add("testUiccid");
@@ -168,7 +154,6 @@ public class UserApiService {
     }
 
     // create user with non-existent role
-
     public UserObject createUserWithNonExistentRole() {
         Faker faker = new Faker();
         ArrayList<String> uiccIds = new ArrayList<>();
@@ -185,7 +170,6 @@ public class UserApiService {
     }
 
     // update existing user
-
     public UserObject updateExistingUser(String userId) {
         Faker faker = new Faker();
         ArrayList<String> uiccIds = new ArrayList<>();
@@ -203,7 +187,6 @@ public class UserApiService {
     }
 
     // update user with existent username
-
     public UserObject createUserWithExistentUsername() {
         ValidatableResponse validatableResponse = getAllUsers();
 
@@ -217,7 +200,6 @@ public class UserApiService {
     }
 
     // Create user with non-existent roleId
-
     public UserObject createUserWithNonExistentRoleId() {
         ValidatableResponse validatableResponse = getAllUsers();
         Faker faker = new Faker();
@@ -232,7 +214,6 @@ public class UserApiService {
     }
 
     // Delete user by id
-
     public ValidatableResponse deleteUserById(String userId) {
         log.info("Deleting the user with id: {}", userId);
 
@@ -243,14 +224,12 @@ public class UserApiService {
     }
 
     // method returns id field from response
-
     public String extractUserIdFromResponse(ValidatableResponse response) {
         String userId = response.extract().body().jsonPath().get("id");
         return userId;
     }
 
     // get role by id
-
     public ValidatableResponse getRoleById(String roleId) {
         log.info("Getting role with id {}", roleId);
 
@@ -261,7 +240,6 @@ public class UserApiService {
     }
 
     // post a new user role
-
     public ValidatableResponse createNewUserRole() {
         UserRole userRole = createNewRoleObject();
 
@@ -273,7 +251,6 @@ public class UserApiService {
     }
 
     // create a new role object
-
     public UserRole createNewRoleObject() {
         Faker faker = new Faker();
         ArrayList<String> rolesList = new ArrayList<>();
@@ -288,7 +265,6 @@ public class UserApiService {
     }
 
     // create a new role with a specific name
-
     public UserRole createNewRoleObject(String roleName) {
         Faker faker = new Faker();
         ArrayList<String> rolesList = new ArrayList<>();
@@ -303,7 +279,6 @@ public class UserApiService {
     }
 
     // create a new role with already a specific name
-
     public ValidatableResponse createNewUserRoleWithSpecifiedName(String roleName) {
 
         UserRole userRole = createNewRoleObject(roleName);
@@ -316,7 +291,6 @@ public class UserApiService {
     }
 
     // get an existing role name
-
     public String getExistingRoleName() {
         ValidatableResponse listOfAllRoles = getAllRoles();
         return listOfAllRoles.extract().body().jsonPath().get("roleName[0]");
@@ -372,6 +346,14 @@ public class UserApiService {
     // returns a role ID with "not_editable" status value
     public String findNotEditableRoleId() {
         return get("user-service/roles").path("find { it.status == 'not_editable' }.id");
+    }
+
+    // delete user role with given roleId
+    public ValidatableResponse deleteRoleById(String roleId) {
+        return setup()
+                .when()
+                .delete("user-service/roles/" + roleId)
+                .then();
     }
 
 }
