@@ -166,7 +166,7 @@ public class UserApiService {
     }
 
     // update existing user
-    public UserObject updateExistingUser() {
+    public UserObject updateExistingUser(String userId) {
         Faker faker = new Faker();
         ArrayList<String> uiccIds = new ArrayList<>();
         uiccIds.add("testUiccid");
@@ -177,7 +177,7 @@ public class UserApiService {
                 .setGroupId("autotestGeneratedUsers")
                 .setRoleId(getUserRole("0"))
                 .setUiccIds(uiccIds)
-                .setId(getUserId("0"));
+                .setId(userId);
 
         return user;
     }
