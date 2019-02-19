@@ -52,7 +52,6 @@ public class ContentManagementTests {
 
     @Test
     @Description("Test can get UICC group group by ID")
-    @Disabled("VSTS-311")
     public void testCanGetUICCgroupById() {
         // given
         String id = contentApiService.getNewlyCreatedUICCgroupId();
@@ -122,7 +121,6 @@ public class ContentManagementTests {
 
     // test can get UICC by ID
     @Test
-    @Disabled("VSTS-311")
     @Description("Test can get newly created UICC by Id")
     public void testCanGetUiccById() {
         // given
