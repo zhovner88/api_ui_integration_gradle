@@ -5,12 +5,14 @@ import com.setpm.ui.pages.DashboardPage;
 import com.setpm.ui.pages.LoginPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.Disabled;
 import org.testng.annotations.Test;
 
 @Feature("Login page Tests")
 public class DashboardPageTests extends BaseTest {
 
     @Test
+    @Disabled
     @Description("User can logout from account")
     public void loggedUserCanLogOut() {
         // given

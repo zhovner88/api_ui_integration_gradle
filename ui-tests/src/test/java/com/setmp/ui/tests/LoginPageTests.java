@@ -7,12 +7,14 @@ import com.setpm.ui.pages.DashboardPage;
 import com.setpm.ui.pages.LoginPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.Disabled;
 import org.testng.annotations.Test;
 
 @Feature("Dashboard page tests")
 public class LoginPageTests extends BaseTest {
 
     @Test
+    @Disabled
     @Description("User can login with valid credentials")
     public void testCanLoginUserWithValidCredentials() {
         // given
@@ -26,6 +28,7 @@ public class LoginPageTests extends BaseTest {
     }
 
     @Test
+    @Disabled
     @Description("User can't login with invalid credentials")
     public void testCantLoginUserWithInvalidCredentials() {
         // given

@@ -1,8 +1,8 @@
 package com.setpm.web.api.service;
 
 import com.github.javafaker.Faker;
-import com.setpm.web.api.model.UICC;
-import com.setpm.web.api.model.UICCgroup;
+import com.setpm.web.api.model.UICCmodels.UICC;
+import com.setpm.web.api.model.UICCmodels.UICCgroup;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -10,7 +10,6 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import javafx.scene.chart.ValueAxis;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
