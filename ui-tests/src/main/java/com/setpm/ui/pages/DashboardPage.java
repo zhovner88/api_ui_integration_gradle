@@ -14,7 +14,7 @@ public class DashboardPage {
     public SelenideElement dashboard = $(Selectors.byText("Dashboard"));
     public SelenideElement scripts = $(Selectors.byText("Scripts"));
     public SelenideElement applets = $(Selectors.byText("Applets"));
-    public SelenideElement uiccGroups = $(Selectors.byText("UICC’s groups"));
+    public SelenideElement uiccGroups = $(Selectors.byText("UICCgroup’s groups"));
     public SelenideElement relationProfiles = $(Selectors.byText("Relation profiles"));
     public SelenideElement campaigns = $(Selectors.byText("Campaigns"));
     public SelenideElement logSearch = $(Selectors.byText("Log search"));

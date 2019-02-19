@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsNot.not;
 
-public class UserServiceTests {
+public class UserManagementTests {
 
     @BeforeAll
     static void setUp() {
