@@ -10,7 +10,6 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import javafx.scene.chart.ValueAxis;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
