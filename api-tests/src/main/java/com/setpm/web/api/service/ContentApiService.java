@@ -58,7 +58,7 @@ public class ContentApiService {
         return group;
     }
 
-    // get newly created
+    // get newly created group ID
     public String getUiccGroupId(ValidatableResponse validatableResponse) {
         return validatableResponse.extract().path("id");
     }
