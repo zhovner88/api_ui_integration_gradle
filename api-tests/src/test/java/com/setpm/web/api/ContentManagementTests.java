@@ -22,6 +22,8 @@ public class ContentManagementTests {
 
     ContentApiService contentApiService = new ContentApiService();
 
+    // UICC group tests
+
     @Test
     @Description("Test can get a list of UICCgroup groups")
     public void testCanGetListOfUICC() {
@@ -78,6 +80,8 @@ public class ContentManagementTests {
                 .statusCode(200);
     }
 
+    // UICCs tests
+
     @Test
     @Description("Test can get list of UICCgroup groups")
     public void testCanGetListOfUiccGrops() {
@@ -89,6 +93,64 @@ public class ContentManagementTests {
                 .statusCode(200)
                 .body("id", response -> not(isEmptyString()));
     }
+
+    @Test
+    @Description("Test can get list of UICCs")
+    public void testCanGetListOfUICCs() {
+        // when
+        ValidatableResponse validatableResponse = contentApiService.getListOfUICCs();
+
+        // expect
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("id", response -> not(isEmptyString()));
+    }
+
+    // test can create UICC
+    @Test
+    @Description("Test can create a new UICC")
+    public void testCanCreateUICC() {
+        // when
+        ValidatableResponse validatableResponse = contentApiService
+                .postNewUICCobject(contentApiService.createNewUiccObject());
+
+        // expect
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("id", response -> not(isEmptyString()));
+    }
+
+    // test can get UICC by ID
+    @Test
+    @Disabled("VSTS-311")
+    @Description("Test can get newly created UICC by Id")
+    public void testCanGetUiccById() {
+        // given
+        String id = contentApiService.getNewlyCreatedUICCid();
+
+        // when
+        ValidatableResponse validatableResponse = contentApiService.getUiccById(id);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("id", response -> is(id));
+    }
+
+    @Test
+    @Description("Test can delete newly created UICC by ID")
+    public void testCanDeleteUiccById() {
+        // given
+        String id = contentApiService.getNewlyCreatedUICCid();
+
+        // when
+        ValidatableResponse validatableResponse = contentApiService.deleteUiccById(id);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(200);
+    }
+
 
 
 }

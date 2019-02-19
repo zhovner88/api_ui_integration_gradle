@@ -1,6 +1,7 @@
 package com.setpm.web.api.service;
 
 import com.github.javafaker.Faker;
+import com.setpm.web.api.model.UICC;
 import com.setpm.web.api.model.UICCgroup;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -9,6 +10,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import javafx.scene.chart.ValueAxis;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -91,5 +93,73 @@ public class ContentApiService {
                 .get("content-service/uicc_groups")
                 .then();
     }
+
+    // get list of UICCs
+    public ValidatableResponse getListOfUICCs() {
+        return setup()
+                .when()
+                .get("content-service/uicc")
+                .then();
+    }
+
+    // post new UICC object
+    public ValidatableResponse postNewUICCobject(UICC uicc) {
+        return setup()
+                .body(uicc)
+                .when()
+                .post("content-service/uicc")
+                .then();
+    }
+
+    // create new UICC object
+    public UICC createNewUiccObject() {
+        Faker faker = new Faker();
+
+        ArrayList<String> UiccList = new ArrayList<>();
+        UiccList.add("6e443116-eb71-4fcd-8645-134b2254d749");
+        UiccList.add("15aecf70-7a84-4bf9-8777-9386a71cfe94");
+
+        UICC uicc = new UICC()
+                .setDescription("auto generated UICC " + faker.idNumber().valid())
+                .setUserIds(UiccList);
+
+        return uicc;
+    }
+
+    // get UICC by ID
+    public ValidatableResponse getUiccById(String id) {
+        return setup()
+                .when()
+                .get("content-service/uicc/" + id)
+                .then();
+
+    }
+
+    public String getUiccId(ValidatableResponse validatableResponse) {
+        return validatableResponse.extract().path("id");
+    }
+
+    // return a newly created UICCgroup group ID
+    public String getNewlyCreatedUICCid() {
+        return getUiccId(postUICC(createNewUiccObject()));
+    }
+
+    // post a new UICC object
+    public ValidatableResponse postUICC(UICC uicc) {
+        return setup()
+                .body(uicc)
+                .when()
+                .post("content-service/uicc")
+                .then();
+    }
+
+    // delete UICC by ID
+    public ValidatableResponse deleteUiccById(String id) {
+        return setup()
+                .when()
+                .delete("content-service/uicc/" + id)
+                .then();
+    }
+
 
 }
