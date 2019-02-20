@@ -1,8 +1,8 @@
 package com.setpm.web.api.service;
 
 import com.github.javafaker.Faker;
-import com.setpm.web.api.model.UICCmodels.UICC;
-import com.setpm.web.api.model.UICCmodels.UICCgroup;
+import com.setpm.web.api.model.UICCmodel.UICC;
+import com.setpm.web.api.model.UICCmodel.UICCgroup;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;

@@ -1,9 +1,9 @@
 package com.setpm.web.api.service;
 
 import com.github.javafaker.Faker;
-import com.setpm.web.api.model.userModels.User;
-import com.setpm.web.api.model.userModels.UserObject;
-import com.setpm.web.api.model.userModels.UserRole;
+import com.setpm.web.api.model.userModel.User;
+import com.setpm.web.api.model.userModel.UserObject;
+import com.setpm.web.api.model.userModel.UserRole;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;

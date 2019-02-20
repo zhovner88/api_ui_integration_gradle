@@ -1,4 +1,4 @@
-package com.setpm.web.api.model.userModels;
+package com.setpm.web.api.model.userModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

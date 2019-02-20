@@ -1,4 +1,4 @@
-package com.setpm.web.api.model.UICCmodels;
+package com.setpm.web.api.model.UICCmodel;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
