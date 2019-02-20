@@ -3,6 +3,7 @@ package com.setpm.web.api.service;
 import com.github.javafaker.Faker;
 import com.setpm.web.api.model.UICCmodel.UICC;
 import com.setpm.web.api.model.UICCmodel.UICCgroup;
+import com.setpm.web.api.model.UICCmodel.UICCupdate;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -157,6 +158,46 @@ public class ContentApiService {
         return setup()
                 .when()
                 .delete("content-service/uicc/" + id)
+                .then();
+    }
+
+    // update UICC group
+    public ValidatableResponse updateUCCgroupWithID(String id) {
+        Faker faker = new Faker();
+        ArrayList<Integer> UICCs = new ArrayList<>();
+        UICCs.add(1000000001);
+        UICCs.add(1000000002);
+        UICCs.add(1000000003);
+
+        UICCupdate uiccUpdated = new UICCupdate()
+                .setId(id)
+                .setDescription("Updated UICC group " + faker.idNumber().valid())
+                .setIccids(UICCs);
+
+        return setup()
+                .body(uiccUpdated)
+                .when()
+                .put("content-service/uicc_groups/" + id)
+                .then();
+    }
+
+    // update UICC group with wrong id
+    public ValidatableResponse updateUCCgroupWithWrongID(String id) {
+        Faker faker = new Faker();
+        ArrayList<Integer> UICCs = new ArrayList<>();
+        UICCs.add(1000000001);
+        UICCs.add(1000000002);
+        UICCs.add(1000000003);
+
+        UICCupdate uiccUpdated = new UICCupdate()
+                .setId("wrong_id")
+                .setDescription("Updated UICC group " + faker.idNumber().valid())
+                .setIccids(UICCs);
+
+        return setup()
+                .body(uiccUpdated)
+                .when()
+                .put("content-service/uicc_groups/" + id)
                 .then();
     }
 
