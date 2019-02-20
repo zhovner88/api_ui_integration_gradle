@@ -14,5 +14,5 @@ Technologies used:
 - TestNG
 - Allure
 
-Lombok plugin need to be installed in IntelliJ. Annotation processing needs to be enabled in IDE settings.
+Lombok plugin need to be installed for IntelliJ. Annotation processing needs to be enabled in IDE settings.
 https://plugins.jetbrains.com/plugin/6317-lombok-plugin
