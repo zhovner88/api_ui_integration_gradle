@@ -1,7 +1,7 @@
 package com.setpm.web.api;
 
-import com.setpm.web.api.model.userModels.User;
-import com.setpm.web.api.model.userModels.UserObject;
+import com.setpm.web.api.model.userModel.User;
+import com.setpm.web.api.model.userModel.UserObject;
 import com.setpm.web.api.service.UserApiService;
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
