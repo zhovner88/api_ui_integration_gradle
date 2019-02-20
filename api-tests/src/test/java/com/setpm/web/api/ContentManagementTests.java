@@ -148,6 +148,36 @@ public class ContentManagementTests {
                 .statusCode(200);
     }
 
+    @Test
+    @Description("Test can update UICC group")
+    public void testCanUpdateUICCgroup() {
+        // given
+        String id = contentApiService.getNewlyCreatedUICCid();
+
+        // when
+        ValidatableResponse validatableResponse = contentApiService.updateUCCgroupWithID(id);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(200)
+                .body("id", response -> is(id));
+    }
+
+    @Test
+    @Description("Test can handle wrong UICC group id while updating group")
+    public void testCanHandleUpdateWithIncorrectId() {
+        // given
+        String id = contentApiService.getNewlyCreatedUICCid();
+
+        // when
+        ValidatableResponse validatableResponse = contentApiService.updateUCCgroupWithWrongID(id);
+
+        // then
+        validatableResponse.assertThat()
+                .statusCode(400)
+                .body("message", response -> is("id_not_match_error"));
+    }
+
 
 
 }
